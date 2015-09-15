@@ -5,6 +5,7 @@
  */
 package project1.BusinessLayer;
 
+import project1.Course;
 import project1.Student;
 
 /**
@@ -12,5 +13,5 @@ import project1.Student;
  * @author ESmallwood
  */
 public interface IStudentManager {
-    Student[] getStudents();
+    Student[] getStudents(String data, Course[] courses);
 }

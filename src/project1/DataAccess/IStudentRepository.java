@@ -10,5 +10,5 @@ package project1.DataAccess;
  * @author ESmallwood
  */
 public interface IStudentRepository {
-    
+    String getStudents(String data);
 }

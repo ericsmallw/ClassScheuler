@@ -26,8 +26,8 @@ public class CourseScheduler {
     }
     
     public int minimizeCourseSize(String studentData, String courseData){
-        Hashtable<Integer, Course> courses = courseManager.getCourses();
-        
+        Course[] courses = courseManager.getCourses();
+        Student[] students = studentManager.getStudents();
         return 0;
     };
 }

@@ -5,12 +5,24 @@
  */
 package project1.BusinessLayer;
 
+import project1.Course;
+import project1.DataAccess.IStudentRepository;
 import project1.Student;
 
 
 public class StudentManager implements IStudentManager {
+    private final IStudentRepository studentRepository;
     
-    public Student[] getStudents(){
+    public StudentManager(IStudentRepository studentRepository){
+           this.studentRepository = studentRepository;    
+    }
+    
+    public Student[] getStudents(String data, Course[] courses){
+        String studentData = studentRepository.getStudents(data);
+        return createStudents(studentData, courses);
+    }
+    
+    private Student[] createStudents(String studentData, Course[] courses){
         Student[] students= new Student[]{};
         return students;
     }
