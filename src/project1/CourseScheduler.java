@@ -5,7 +5,6 @@
  */
 package project1;
 
-import java.util.Hashtable;
 import project1.BusinessLayer.ICourseManager;
 import project1.BusinessLayer.IOptimizationManager;
 import project1.BusinessLayer.IStudentManager;
@@ -27,7 +26,7 @@ public class CourseScheduler {
     
     public int minimizeCourseSize(String studentData, String courseData){
         Course[] courses = courseManager.getCourses();
-        Student[] students = studentManager.getStudents();
-        return 0;
+        Student[] students = studentManager.getStudents(studentData, courses);
+        return optimizationManger.minimizeClassSize(courses, students);
     };
 }

@@ -10,5 +10,13 @@ package project1;
  * @author ESmallwood
  */
 public class Student {
+    private final Course[] scheduledCourses;
+
+    public Student(Course[] scheduledCourses){
+        this.scheduledCourses = scheduledCourses;
+    }
     
+    public Course[] getScheduledCourses() {
+        return scheduledCourses;
+    }
 }

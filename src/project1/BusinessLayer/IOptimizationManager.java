@@ -5,10 +5,13 @@
  */
 package project1.BusinessLayer;
 
+import project1.Course;
+import project1.Student;
+
 /**
  *
  * @author ESmallwood
  */
 public interface IOptimizationManager {
-    
+    int minimizeClassSize(Course[] courses, Student[] students);
 }

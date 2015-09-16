@@ -31,7 +31,7 @@ public class CourseManager implements ICourseManager {
             int[] coursePrerequisites = new int[]{};
             
             //check for prerequisites
-            if(prerequisites.containsKey(i + 1)){
+            if(prerequisites.containsKey(i)){
                 //convert Integer[] to in=[]
                 int numOfPrereqs = prerequisites.get(i).length;
                 coursePrerequisites = new int[numOfPrereqs];

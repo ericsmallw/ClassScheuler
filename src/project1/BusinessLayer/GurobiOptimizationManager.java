@@ -5,7 +5,14 @@
  */
 package project1.BusinessLayer;
 
+import project1.Course;
+import project1.Student;
+
 
 public class GurobiOptimizationManager implements IOptimizationManager {
+
+    public int minimizeClassSize(Course[] courses, Student[] students) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

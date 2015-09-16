@@ -16,7 +16,6 @@ public class Course {
     public Course(String name, int[] prereqIds){
         this.name = name;
         this.prereqIds = prereqIds;
-        
     }
     
     public String getName() {
