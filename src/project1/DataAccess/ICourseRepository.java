@@ -6,12 +6,15 @@
 package project1.DataAccess;
 
 import java.util.HashMap;
+import project1.Course;
+import project1.Semester;
 
 /**
  *
  * @author ESmallwood
  */
 public interface ICourseRepository {
-    String[] getCourses();
+    Course[] getCourses();
     HashMap<Integer, Integer[]> getPrerequisites();
+    HashMap<Integer, Semester[]> getCourseAvailablilty();
 }

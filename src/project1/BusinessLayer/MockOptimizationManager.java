@@ -12,9 +12,10 @@ import project1.Student;
 public class MockOptimizationManager implements IOptimizationManager {
 
     @Override
-    public int minimizeClassSize(Course[] courses, Student[] students) {
+    public String minimizeClassSize(Course[] courses, Student[] students, 
+                                    int numberOfSemesters, int allowedNoOfCoursesPerSemester) {
         Random rand = new Random();
         
-        return rand.nextInt((100 - 0) + 1) + 0;
+        return String.valueOf(rand.nextInt((100 - 0) + 1) + 0);
     }
 }

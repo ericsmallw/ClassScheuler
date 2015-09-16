@@ -9,12 +9,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import project1.Course;
+import project1.Student;
 
 
 public class StudentFileSystemRepository implements IStudentRepository {
 
-    @Override
-    public String getStudents(String data) {
+    public Student[] getStudents(String data) {
         BufferedReader reader;
         StringBuilder sb = new StringBuilder();
         try {
@@ -31,8 +33,35 @@ public class StudentFileSystemRepository implements IStudentRepository {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        String studentData = sb.toString();
+        Student[] students = mapStudentData(studentData);
+        return students;
+    }
+    
+    private Student[] mapStudentData(String studentData){
+        ArrayList<Student> students = new ArrayList<>();
+        String[] studentsBySchedule = studentData.split("\\r?\\n");
         
-        return sb.toString();
+        for(int i = 0; i < studentsBySchedule.length; i++){
+            ArrayList<Integer> scheduledCourses = new ArrayList<>();
+            String[] courseNumbers = studentsBySchedule[i].split("\\.");
+            for(int j = 0; j < courseNumbers.length; j++){
+                try{
+                    int courseIndex = Integer.parseInt(courseNumbers[j].trim()) - 1;
+                    scheduledCourses.add(courseIndex);
+                }catch(NumberFormatException nfe){
+                    //continue as this is not a number
+                }
+            }
+            
+            if(scheduledCourses.size() > 0){
+                students.add(new Student(scheduledCourses));
+            }
+        }
+        
+        Student[] studentArr = new Student[students.size()];
+        students.toArray(studentArr);
+        return studentArr;
     }
     
 }

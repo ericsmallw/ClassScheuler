@@ -5,18 +5,20 @@
  */
 package project1;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ESmallwood
  */
 public class Student {
-    private final Course[] scheduledCourses;
+    private final ArrayList<Integer> scheduledCourseIds;
 
-    public Student(Course[] scheduledCourses){
-        this.scheduledCourses = scheduledCourses;
+    public Student(ArrayList<Integer> scheduledCourseIds){
+        this.scheduledCourseIds = scheduledCourseIds;
     }
     
-    public Course[] getScheduledCourses() {
-        return scheduledCourses;
+    public ArrayList<Integer> getScheduledCourses() {
+        return scheduledCourseIds;
     }
 }

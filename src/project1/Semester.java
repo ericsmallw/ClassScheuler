@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project1.DataAccess;
-
-import project1.Student;
+package project1;
 
 /**
  *
  * @author ESmallwood
  */
-public interface IStudentRepository {
-    Student[] getStudents(String data);
+public enum Semester {
+    Fall,
+    
+    Spring,
+    
+    Summer
 }

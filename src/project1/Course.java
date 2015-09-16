@@ -12,10 +12,12 @@ package project1;
 public class Course {
     private final String name;
     private final int[] prereqIds;
-    
-    public Course(String name, int[] prereqIds){
+    private final Semester[] semestersAvailable;
+
+    public Course(String name, int[] prereqIds, Semester[] semesterAvailable){
         this.name = name;
         this.prereqIds = prereqIds;
+        this.semestersAvailable = semesterAvailable;
     }
     
     public String getName() {
@@ -24,5 +26,9 @@ public class Course {
 
     public int[] getPrereqIds() {
         return prereqIds;
+    }
+    
+    public Semester[] getSemestersAvailable() {
+        return semestersAvailable;
     }
 }

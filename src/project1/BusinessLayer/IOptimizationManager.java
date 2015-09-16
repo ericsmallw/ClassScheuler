@@ -13,5 +13,7 @@ import project1.Student;
  * @author ESmallwood
  */
 public interface IOptimizationManager {
-    int minimizeClassSize(Course[] courses, Student[] students);
+    
+    String minimizeClassSize(Course[] courses, Student[] students, 
+                             int numberOfSemesters, int allowedNumberOfCoursesPerSemester);
 }

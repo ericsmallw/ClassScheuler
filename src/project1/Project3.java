@@ -20,15 +20,15 @@ public class Project3 {
     public static void main(String[] args) {
         // wire up dependencies
         ICourseRepository courseRepository = new CourseStaticRepository();
-        IOptimizationManager optimizationManager = new MockOptimizationManager();
+        IOptimizationManager optimizationManager = new GurobiOptimizationManager();
         IStudentRepository studentRepository = new StudentFileSystemRepository();
         ICourseManager courseManager = new CourseManager(courseRepository);
         IStudentManager studentManager = new StudentManager(studentRepository);
         CourseScheduler courseScheduler = new CourseScheduler(optimizationManager, courseManager, studentManager);
         
-        int num = courseScheduler.minimizeCourseSize("student_schedule.txt", "");
+        String num = courseScheduler.minimizeCourseSize("student_schedule.txt", "");
         
-        System.out.println(num);
+        System.out.println("X = " + num);
     }
     
 }
