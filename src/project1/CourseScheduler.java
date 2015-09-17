@@ -33,4 +33,11 @@ public class CourseScheduler {
         String classSize = optimizationManger.getMinimizedCourseSize(courses, students, 12, 2);
         System.out.println("X = " + classSize);
     };
+    
+    public void getStudentSchedule(String studentData){
+        ArrayList<Course> courses = courseManager.getCourses();
+        ArrayList<Student> students = studentManager.getStudents(studentData);
+        String schedule = optimizationManger.getCourseScheduleForStudent(courses, students, 12, 2, 1);
+        System.out.println(schedule);
+    }
 }

@@ -38,13 +38,40 @@ public class GurobiOptimizationManager implements IOptimizationManager {
          return "Operation Out of Bounds";
     }
     
+     @Override
+    public String getCourseScheduleForStudent(ArrayList<Course> courses, ArrayList<Student> students, 
+                                    int numberOfSemesters, 
+                                    int allowedNumberOfCoursesPerSemester, int studentNumber) {
+        try {
+             GRBModel model = minimizeCourseSize(courses, students, numberOfSemesters, allowedNumberOfCoursesPerSemester);
+             String schedule = "";
+             for(int k = 0; k < numberOfSemesters; k++){
+                 schedule += "Semester " + k + ": ";
+                for(int j = 0; j < courses.size(); j++){
+                    GRBVar studentClassVar= model.getVarByName("Y" + studentNumber + j + k);
+                    Double courseTaken = studentClassVar.get(GRB.DoubleAttr.X);
+                    if(courseTaken == 1){
+                        String course = courses.get(j).getName();
+                        schedule += course + ", ";
+                        
+                    }
+                }
+                schedule += "\n";
+             }
+             return schedule;
+         } catch (GRBException ex) {
+             Logger.getLogger(GurobiOptimizationManager.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return "Operation Out of Bounds";
+    }
+    
     private GRBModel minimizeCourseSize(ArrayList<Course> courses, ArrayList<Student> students, 
                                     int numberOfSemesters, int allowedNoOfCoursesPerSemester) {
         
         try {
             //initialize model
             GRBEnv env = new GRBEnv("");
-            env.set(GRB.IntParam.OutputFlag, 0);
+            //env.set(GRB.IntParam.OutputFlag, 0);
             GRBModel model = new GRBModel(env);
             
             //create variables
@@ -79,7 +106,9 @@ public class GurobiOptimizationManager implements IOptimizationManager {
                         courseOnlyOnce.addTerm(1, var);
                     }
                     String courseId = courses.get(j).getId();
-                    int rhs = students.get(i).getScheduledCourses().contains(courseId) ? 1 : 0;
+                    ArrayList<String> scheduledCourses = students.get(i).getScheduledCourses();
+                    boolean isStudentTakingCourse = scheduledCourses.contains(courseId);
+                    int rhs = isStudentTakingCourse ? 1 : 0;
                     model.addConstr(courseOnlyOnce, GRB.EQUAL, rhs, null);
                 }
             }
@@ -87,13 +116,13 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             //students can only take a certain number of courses each semester
             for(int i = 0; i < students.size(); i++){
                 for(int k = 0; k < numberOfSemesters; k++){
-                    GRBLinExpr semsesterTwoClasses = new GRBLinExpr();
+                    GRBLinExpr semsesterClassLimit = new GRBLinExpr();
                     for(int j = 0; j < courses.size(); j++){
                         GRBVar var= y[i][j][k];
-                        semsesterTwoClasses.addTerm(1, var);
+                        semsesterClassLimit.addTerm(1, var);
                     }
                     
-                    model.addConstr(semsesterTwoClasses, GRB.LESS_EQUAL, allowedNoOfCoursesPerSemester, null);
+                    model.addConstr(semsesterClassLimit, GRB.LESS_EQUAL, allowedNoOfCoursesPerSemester, null);
                 }
             }
             
@@ -101,23 +130,40 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             for(int i = 0; i < students.size(); i++){
                 Student student = students.get(i);
                 for(int j = 0; j < student.getScheduledCourses().size(); j++){
-                    switch(j){
-                        case 0:
-                        case 6:
-                        case 12:
-                        case 15:
-                            ArrayList<Course> pr = courses.get(j).prereqs;
-                            GRBLinExpr lhs = new GRBLinExpr();
-                            GRBLinExpr rhs = new GRBLinExpr();
-                            for(int l = 0; l < pr.size(); l++){
-                                for(int k = 0; k < numberOfSemesters; k++){
-                                    lhs.addTerm(k+1, y[i][j][k]);
-                                    rhs.addTerm(k+1, y[i][courses.indexOf(pr.get(l))][k]);
+                    //check if the student is taking any courses which have prerequisites
+                    String courseId = student.getScheduledCourses().get(j);
+                    switch(courseId){
+                        case "1":
+                        case "7":
+                        case "13":
+                        case "16":
+                            //find this course's index in the course by id
+                            int courseIndex  = 0;
+                            Course course = null;
+                            for(int c = 0; c < courses.size(); c++){
+                                course = courses.get(c);
+                                if(course.getId().equals(courseId)){
+                                    courseIndex = courses.indexOf(course);
+                                    break;
                                 }
                             }
-
-                            model.addConstr(lhs, GRB.LESS_EQUAL, rhs, null);
                             
+                            //get list of prerequisite courses
+                            GRBLinExpr lhs = new GRBLinExpr();
+                            GRBLinExpr lhs2 = new GRBLinExpr();
+                            GRBLinExpr rhs = new GRBLinExpr();
+                            //find the index in the course list for each of the
+                            //prerequisites for this course, and then build teh
+                            //right hand and left had expressions
+                            for(int l = 0; l < course.prereqs.size(); l++){
+                                for(int k = 0; k < numberOfSemesters; k++){
+                                    int prerequisiteIndex = courses.indexOf(course.prereqs.get(l));
+                                    rhs.addTerm(1, y[i][courseIndex][k]);
+                                    lhs.addTerm(1, y[i][prerequisiteIndex][k]);
+                                }
+                            }
+                            
+                            model.addConstr(lhs, GRB.LESS_EQUAL, rhs, null);
                             break;
                         default:
                             break;

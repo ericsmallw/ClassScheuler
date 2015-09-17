@@ -21,4 +21,11 @@ public class MockOptimizationManager implements IOptimizationManager {
         return String.valueOf(rand.nextInt((100 - 0) + 1) + 0);
     }
     
+    @Override
+    public String getCourseScheduleForStudent(ArrayList<Course> courses, ArrayList<Student> students, 
+                                    int numberOfSemesters, 
+                                    int allowedNumberOfCoursesPerSemester, int studentNumber){
+        return "test";
+    }
+    
 }

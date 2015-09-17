@@ -26,7 +26,8 @@ public class Demo {
         IStudentManager studentManager = new StudentManager(studentRepository);
         CourseScheduler courseScheduler = new CourseScheduler(optimizationManager, courseManager, studentManager);
         
-        courseScheduler.getMinimizedCourseSize("student_schedule.txt", "");
+        //courseScheduler.getMinimizedCourseSize("student_schedule.txt", "");
+        courseScheduler.getStudentSchedule("student_schedule.txt");
         
         
     }
