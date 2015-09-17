@@ -5,6 +5,7 @@
  */
 package project1.DataAccess;
 
+import java.util.ArrayList;
 import project1.Student;
 
 /**
@@ -12,5 +13,5 @@ import project1.Student;
  * @author ESmallwood
  */
 public interface IStudentRepository {
-    Student[] getStudents(String data);
+    ArrayList<Student> getStudents(String data);
 }

@@ -12,13 +12,13 @@ import java.util.ArrayList;
  * @author ESmallwood
  */
 public class Student {
-    private final ArrayList<Integer> scheduledCourseIds;
+    private final ArrayList<String> scheduledCourseIds;
 
-    public Student(ArrayList<Integer> scheduledCourseIds){
+    public Student(ArrayList<String> scheduledCourseIds){
         this.scheduledCourseIds = scheduledCourseIds;
     }
     
-    public ArrayList<Integer> getScheduledCourses() {
+    public ArrayList<String> getScheduledCourses() {
         return scheduledCourseIds;
     }
 }

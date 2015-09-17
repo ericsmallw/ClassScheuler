@@ -5,6 +5,7 @@
  */
 package project1;
 
+import java.util.ArrayList;
 import project1.BusinessLayer.ICourseManager;
 import project1.BusinessLayer.IOptimizationManager;
 import project1.BusinessLayer.IStudentManager;
@@ -18,15 +19,18 @@ public class CourseScheduler {
     private final ICourseManager courseManager;
     private final IStudentManager studentManager;
     
-    public CourseScheduler(IOptimizationManager optimizationManger, ICourseManager courseManager, IStudentManager studentManager){
+    public CourseScheduler(IOptimizationManager optimizationManger, 
+                           ICourseManager courseManager, 
+                           IStudentManager studentManager){
         this.optimizationManger = optimizationManger;
         this.courseManager = courseManager;
         this.studentManager = studentManager;
     }
     
-    public String minimizeCourseSize(String studentData, String courseData){
-        Course[] courses = courseManager.getCourses();
-        Student[] students = studentManager.getStudents(studentData, courses);
-        return optimizationManger.minimizeClassSize(courses, students, 12, 2);
+    public void getMinimizedCourseSize(String studentData, String courseData){
+        ArrayList<Course> courses = courseManager.getCourses();
+        ArrayList<Student> students = studentManager.getStudents(studentData);
+        String classSize = optimizationManger.getMinimizedCourseSize(courses, students, 12, 2);
+        System.out.println("X = " + classSize);
     };
 }

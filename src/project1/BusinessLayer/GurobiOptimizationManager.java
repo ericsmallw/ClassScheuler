@@ -11,16 +11,36 @@ import gurobi.GRBException;
 import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import project1.Course;
 import project1.Semester;
 import project1.Student;
 
 
 public class GurobiOptimizationManager implements IOptimizationManager {
-    @Override
-    public String minimizeClassSize(Course[] courses, Student[] students, 
+    
+     @Override
+    public String getMinimizedCourseSize(ArrayList<Course> courses, ArrayList<Student> students, 
+                                    int numberOfSemesters, 
+                                    int allowedNumberOfCoursesPerSemester) {
+        
+        
+        
+         try {
+             GRBModel model = minimizeCourseSize(courses, students, numberOfSemesters, allowedNumberOfCoursesPerSemester);
+             GRBVar x = model.getVarByName("X");
+             return String.valueOf((int)x.get(GRB.DoubleAttr.X));
+         } catch (GRBException ex) {
+             Logger.getLogger(GurobiOptimizationManager.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return "Operation Out of Bounds";
+    }
+    
+    private GRBModel minimizeCourseSize(ArrayList<Course> courses, ArrayList<Student> students, 
                                     int numberOfSemesters, int allowedNoOfCoursesPerSemester) {
-        String courseSize = "";
+        
         try {
             //initialize model
             GRBEnv env = new GRBEnv("");
@@ -28,9 +48,9 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             GRBModel model = new GRBModel(env);
             
             //create variables
-            GRBVar[][][] y = new GRBVar[students.length][courses.length][numberOfSemesters];
-            for(int i = 0; i < students.length; i++){
-                for(int j = 0; j < courses.length; j++){
+            GRBVar[][][] y = new GRBVar[students.size()][courses.size()][numberOfSemesters];
+            for(int i = 0; i < students.size(); i++){
+                for(int j = 0; j < courses.size(); j++){
                     for(int k = 0; k < numberOfSemesters; k++){
                         String varName = "Y" + String.valueOf(i)+ String.valueOf(j) + String.valueOf(k);
                         y[i][j][k] = model.addVar(0, 1, 0.0, GRB.BINARY, varName);
@@ -50,24 +70,25 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             //constraints
             
             //each course should be taken once unless the student isnt taking the class
-            for(int i = 0; i < students.length; i++){
-                for(int j = 0; j < courses.length; j++){
+            for(int i = 0; i < students.size(); i++){
+                for(int j = 0; j < courses.size(); j++){
                     GRBLinExpr courseOnlyOnce = new GRBLinExpr();
 
                     for(int k = 0; k < numberOfSemesters; k++){
                         GRBVar var= y[i][j][k];
                         courseOnlyOnce.addTerm(1, var);
-                    }   
-                    int rhs = students[i].getScheduledCourses().contains(j) ? 1 : 0;
+                    }
+                    String courseId = courses.get(j).getId();
+                    int rhs = students.get(i).getScheduledCourses().contains(courseId) ? 1 : 0;
                     model.addConstr(courseOnlyOnce, GRB.EQUAL, rhs, null);
                 }
             }
             
             //students can only take a certain number of courses each semester
-            for(int i = 0; i < students.length; i++){
+            for(int i = 0; i < students.size(); i++){
                 for(int k = 0; k < numberOfSemesters; k++){
                     GRBLinExpr semsesterTwoClasses = new GRBLinExpr();
-                    for(int j = 0; j < courses.length; j++){
+                    for(int j = 0; j < courses.size(); j++){
                         GRBVar var= y[i][j][k];
                         semsesterTwoClasses.addTerm(1, var);
                     }
@@ -77,21 +98,21 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             }
             
             //prerequisites
-            for(int i = 0; i < students.length; i++){
-                Student student = students[i];
+            for(int i = 0; i < students.size(); i++){
+                Student student = students.get(i);
                 for(int j = 0; j < student.getScheduledCourses().size(); j++){
                     switch(j){
                         case 0:
                         case 6:
                         case 12:
                         case 15:
-                            int[] pr = courses[j].getPrereqIds();
+                            ArrayList<Course> pr = courses.get(j).prereqs;
                             GRBLinExpr lhs = new GRBLinExpr();
                             GRBLinExpr rhs = new GRBLinExpr();
-                            for(int l = 0; l < pr.length; l++){
+                            for(int l = 0; l < pr.size(); l++){
                                 for(int k = 0; k < numberOfSemesters; k++){
                                     lhs.addTerm(k+1, y[i][j][k]);
-                                    rhs.addTerm(k+1, y[i][pr[l]][k]);
+                                    rhs.addTerm(k+1, y[i][courses.indexOf(pr.get(l))][k]);
                                 }
                             }
 
@@ -105,11 +126,11 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             }
             
             //capacity limits   
-            for(int j = 0; j < courses.length; j++){
+            for(int j = 0; j < courses.size(); j++){
                 for(int k = 0; k < numberOfSemesters; k++){
                     GRBLinExpr capacityLimit = new GRBLinExpr();
                     
-                    for(int i = 0; i < students.length; i++){
+                    for(int i = 0; i < students.size(); i++){
                         GRBVar var= y[i][j][k];
                         capacityLimit.addTerm(1, var);
                     }
@@ -121,7 +142,7 @@ public class GurobiOptimizationManager implements IOptimizationManager {
                     //check to see if the current semester matches the one of the
                     //available semesters of the course if so the rhs coefficient
                     //should be one
-                    for(Semester semester: courses[j].getSemestersAvailable()){
+                    for(Semester semester: courses.get(j).getSemestersAvailable()){
                         if((k + 1) % Semester.values().length == (semester.ordinal() + 1)){
                             rightHandCoefficient = 1;
                             break;
@@ -134,12 +155,12 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             }
             
             model.optimize();
-            courseSize = String.valueOf((int)x.get(GRB.DoubleAttr.X));
+            return model;
+            
         } catch (GRBException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
         
-        return courseSize;
+        return null;
     }
-    
 }

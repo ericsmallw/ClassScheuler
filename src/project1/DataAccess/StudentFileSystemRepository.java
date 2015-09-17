@@ -16,7 +16,7 @@ import project1.Student;
 public class StudentFileSystemRepository implements IStudentRepository {
 
     @Override
-    public Student[] getStudents(String data) {
+    public ArrayList<Student> getStudents(String data) {
         BufferedReader reader;
         StringBuilder sb = new StringBuilder();
         try {
@@ -34,21 +34,22 @@ public class StudentFileSystemRepository implements IStudentRepository {
             ex.printStackTrace();
         }
         String studentData = sb.toString();
-        Student[] students = mapStudentData(studentData);
+        ArrayList<Student> students = mapStudentData(studentData);
         return students;
     }
     
-    private Student[] mapStudentData(String studentData){
+    private ArrayList<Student> mapStudentData(String studentData){
         ArrayList<Student> students = new ArrayList<>();
         String[] studentsBySchedule = studentData.split("\\r?\\n");
         
         for(int i = 0; i < studentsBySchedule.length; i++){
-            ArrayList<Integer> scheduledCourses = new ArrayList<>();
+            ArrayList<String> scheduledCourses = new ArrayList<>();
             String[] courseNumbers = studentsBySchedule[i].split("\\.");
             for(int j = 0; j < courseNumbers.length; j++){
                 try{
-                    int courseIndex = Integer.parseInt(courseNumbers[j].trim()) - 1;
-                    scheduledCourses.add(courseIndex);
+                    //check that this is a number
+                    Integer.parseInt(courseNumbers[j].trim());
+                    scheduledCourses.add(courseNumbers[j].trim());
                 }catch(NumberFormatException nfe){
                     //continue as this is not a number
                 }
@@ -59,9 +60,7 @@ public class StudentFileSystemRepository implements IStudentRepository {
             }
         }
         
-        Student[] studentArr = new Student[students.size()];
-        students.toArray(studentArr);
-        return studentArr;
+        return students;
     }
     
 }

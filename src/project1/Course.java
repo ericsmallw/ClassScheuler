@@ -5,27 +5,31 @@
  */
 package project1;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ESmallwood
  */
 public class Course {
     private final String name;
-    private final int[] prereqIds;
+    private final String id;
     private final Semester[] semestersAvailable;
+    
+    public ArrayList<Course> prereqs = new ArrayList<>();
 
-    public Course(String name, int[] prereqIds, Semester[] semesterAvailable){
+    public Course(String name, String id, Semester[] semesterAvailable){
         this.name = name;
-        this.prereqIds = prereqIds;
+        this.id = id;
         this.semestersAvailable = semesterAvailable;
     }
     
     public String getName() {
         return name;
     }
-
-    public int[] getPrereqIds() {
-        return prereqIds;
+    
+    public  String getId(){
+        return id;
     }
     
     public Semester[] getSemestersAvailable() {

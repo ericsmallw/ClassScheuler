@@ -14,52 +14,52 @@ import project1.Semester;
  */
 public class CourseStaticData {
     protected static final String[] courseList = {
-        "CS 6210 Advanced Operating Systems",
-        "CS 6250Computer Networks",
-        "CS 6300 Software Development Process 4",
-        "CS7641 Machine Learning",
-        "CS 6290 High Performance Computer Architecture",
-        "CS 6310 Software Architecture and Design 7",
-        "CS 6440 Intro toHealth Informatics",
-        "CS 6505 Computability, Complexity and Algorithms",
-        "CS 7637 Knowledge-Based Artificial Intelligence, Cognitive Systems",
-        "CS 4495 Computer Vision",
-        "CS 6475 Computational Photography",
-        "CS 8803-002 Introduction to Operating Systems",
-        "CS 8803-001Artificial Intelligence for Robotics",
-        "CS 6035 Introduction to InformationSecurity",
-        "CSE 6220 High-Performance Computing",
-        "CS 7646 MachineLearning for Trading",
-        "CS 8803 Special Topics: Reinforcement Learning",
-        "CSE 8803 Special Topics: Big Data"
+        "1.CS 6210 Advanced Operating Systems",
+        "2.CS 6250Computer Networks",
+        "3.CS 6300 Software Development Process 4",
+        "4.CS7641 Machine Learning",
+        "5.CS 6290 High Performance Computer Architecture",
+        "6.CS 6310 Software Architecture and Design 7",
+        "7.CS 6440 Intro toHealth Informatics",
+        "8.CS 6505 Computability, Complexity and Algorithms",
+        "9.CS 7637 Knowledge-Based Artificial Intelligence, Cognitive Systems",
+        "10.CS 4495 Computer Vision",
+        "11.CS 6475 Computational Photography",
+        "12.CS 8803-002 Introduction to Operating Systems",
+        "13.CS 8803-001Artificial Intelligence for Robotics",
+        "14.CS 6035 Introduction to InformationSecurity",
+        "15.CSE 6220 High-Performance Computing",
+        "16.CS 7646 MachineLearning for Trading",
+        "17.CS 8803 Special Topics: Reinforcement Learning",
+        "18.CSE 8803 Special Topics: Big Data"
     };
     
-    protected static final HashMap<Integer, Integer[]> prerequisites = new HashMap<>();
-    protected static final HashMap<Integer, Semester[]> courseAvailability = new HashMap<>();
+    protected static final HashMap<String, String[]> prerequisites = new HashMap<>();
+    protected static final HashMap<String, Semester[]> courseAvailability = new HashMap<>();
     
     static{
-        prerequisites.put(15, new Integer[]{3});
-        prerequisites.put(0, new Integer[]{11});
-        prerequisites.put(12, new Integer[]{8});
-        prerequisites.put(6, new Integer[]{2});
+        prerequisites.put("16", new String[]{"4"});
+        prerequisites.put("1", new String[]{"12"});
+        prerequisites.put("13", new String[]{"9"});
+        prerequisites.put("7", new String[]{"3"});
         
-        courseAvailability.put(0, new Semester[]{Semester.Fall});
-        courseAvailability.put(1, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(2, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(3, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(4, new Semester[]{Semester.Spring});
-        courseAvailability.put(5, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(6, new Semester[]{Semester.Fall});
-        courseAvailability.put(7, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(8, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(9, new Semester[]{Semester.Spring});
-        courseAvailability.put(10, new Semester[]{Semester.Fall});
-        courseAvailability.put(11, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(12, new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
-        courseAvailability.put(13, new Semester[]{Semester.Spring});
-        courseAvailability.put(14, new Semester[]{Semester.Fall});
-        courseAvailability.put(15, new Semester[]{Semester.Spring});
-        courseAvailability.put(16, new Semester[]{Semester.Fall});
-        courseAvailability.put(17, new Semester[]{Semester.Spring});
+        courseAvailability.put("1", new Semester[]{Semester.Fall});
+        courseAvailability.put("2", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("3", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("4", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("5", new Semester[]{Semester.Spring});
+        courseAvailability.put("6", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("7", new Semester[]{Semester.Fall});
+        courseAvailability.put("8", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("9", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("10", new Semester[]{Semester.Spring});
+        courseAvailability.put("11", new Semester[]{Semester.Fall});
+        courseAvailability.put("12", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("13", new Semester[]{Semester.Fall,Semester.Spring,Semester.Summer});
+        courseAvailability.put("14", new Semester[]{Semester.Spring});
+        courseAvailability.put("15", new Semester[]{Semester.Fall});
+        courseAvailability.put("16", new Semester[]{Semester.Spring});
+        courseAvailability.put("17", new Semester[]{Semester.Fall});
+        courseAvailability.put("18", new Semester[]{Semester.Spring});
     }
 }

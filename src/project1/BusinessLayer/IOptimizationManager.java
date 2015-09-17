@@ -5,6 +5,7 @@
  */
 package project1.BusinessLayer;
 
+import java.util.ArrayList;
 import project1.Course;
 import project1.Student;
 
@@ -14,6 +15,6 @@ import project1.Student;
  */
 public interface IOptimizationManager {
     
-    String minimizeClassSize(Course[] courses, Student[] students, 
+    String getMinimizedCourseSize(ArrayList<Course> courses, ArrayList<Student> students, 
                              int numberOfSemesters, int allowedNumberOfCoursesPerSemester);
 }

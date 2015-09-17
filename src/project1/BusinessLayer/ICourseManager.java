@@ -5,6 +5,7 @@
  */
 package project1.BusinessLayer;
 
+import java.util.ArrayList;
 import project1.Course;
 
 /**
@@ -12,5 +13,5 @@ import project1.Course;
  * @author ESmallwood
  */
 public interface ICourseManager {
-    Course[] getCourses();
+    ArrayList<Course> getCourses();
 }

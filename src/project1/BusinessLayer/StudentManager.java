@@ -5,6 +5,7 @@
  */
 package project1.BusinessLayer;
 
+import java.util.ArrayList;
 import project1.Course;
 import project1.DataAccess.IStudentRepository;
 import project1.Student;
@@ -18,7 +19,7 @@ public class StudentManager implements IStudentManager {
     }
     
     @Override
-    public Student[] getStudents(String data, Course[] courses){
+    public ArrayList<Student> getStudents(String data){
         return studentRepository.getStudents(data);
     }
 }
