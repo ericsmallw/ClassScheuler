@@ -12,7 +12,7 @@ import project1.DataAccess.*;
  *
  * @author ESmallwood
  */
-public class Project3 {
+public class Demo {
 
     /**
      * @param args the command line arguments

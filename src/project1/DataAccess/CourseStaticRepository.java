@@ -12,6 +12,7 @@ import project1.Semester;
 
 public class CourseStaticRepository implements ICourseRepository {
     
+    @Override
     public Course[] getCourses() {
         String[] courseList = CourseStaticData.courseList;
         HashMap<Integer, Integer[]> prereqs = getPrerequisites();
@@ -20,10 +21,12 @@ public class CourseStaticRepository implements ICourseRepository {
         return courses;
     }
     
+    @Override
     public HashMap<Integer, Integer[]> getPrerequisites(){
         return CourseStaticData.prerequisites;
     }
     
+    @Override
     public HashMap<Integer, Semester[]> getCourseAvailablilty(){
         return CourseStaticData.courseAvailability;
     }

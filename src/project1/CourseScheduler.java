@@ -27,6 +27,6 @@ public class CourseScheduler {
     public String minimizeCourseSize(String studentData, String courseData){
         Course[] courses = courseManager.getCourses();
         Student[] students = studentManager.getStudents(studentData, courses);
-        return optimizationManger.minimizeClassSize(courses, students, 12, 5);
+        return optimizationManger.minimizeClassSize(courses, students, 12, 2);
     };
 }

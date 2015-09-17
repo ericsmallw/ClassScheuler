@@ -11,7 +11,6 @@ import gurobi.GRBException;
 import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
-import java.util.ArrayList;
 import project1.Course;
 import project1.Semester;
 import project1.Student;
@@ -25,7 +24,7 @@ public class GurobiOptimizationManager implements IOptimizationManager {
         try {
             //initialize model
             GRBEnv env = new GRBEnv("");
-            //env.set(GRB.IntParam.OutputFlag, 0);
+            env.set(GRB.IntParam.OutputFlag, 0);
             GRBModel model = new GRBModel(env);
             
             //create variables
@@ -67,7 +66,6 @@ public class GurobiOptimizationManager implements IOptimizationManager {
             //students can only take a certain number of courses each semester
             for(int i = 0; i < students.length; i++){
                 for(int k = 0; k < numberOfSemesters; k++){
-                    ArrayList<GRBVar> terms = new ArrayList<>();
                     GRBLinExpr semsesterTwoClasses = new GRBLinExpr();
                     for(int j = 0; j < courses.length; j++){
                         GRBVar var= y[i][j][k];
@@ -88,7 +86,6 @@ public class GurobiOptimizationManager implements IOptimizationManager {
                         case 12:
                         case 15:
                             int[] pr = courses[j].getPrereqIds();
-                            int prCourse = 0;
                             GRBLinExpr lhs = new GRBLinExpr();
                             GRBLinExpr rhs = new GRBLinExpr();
                             for(int l = 0; l < pr.length; l++){
@@ -104,7 +101,6 @@ public class GurobiOptimizationManager implements IOptimizationManager {
                         default:
                             break;
                     }
-                            
                 }
             }
             
@@ -126,7 +122,7 @@ public class GurobiOptimizationManager implements IOptimizationManager {
                     //available semesters of the course if so the rhs coefficient
                     //should be one
                     for(Semester semester: courses[j].getSemestersAvailable()){
-                        if((k + 1) % 3 == (semester.ordinal() + 1)){
+                        if((k + 1) % Semester.values().length == (semester.ordinal() + 1)){
                             rightHandCoefficient = 1;
                             break;
                         }
